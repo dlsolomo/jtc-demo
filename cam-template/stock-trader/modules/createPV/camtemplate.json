@@ -1,0 +1,84 @@
+{
+  "description": "creation of Persistent Volume",
+  "name": "createPV",
+  "type": "userCreated",
+  "manifest": {
+    "template_type": "Terraform",
+    "template_provider": "Other",
+    "icon": "serviceicon_1.svg",
+    "template": {
+      "templateData": "variable \"serverip\" {\n  description = \"IP of host to ssh\"\n}\n\nvariable \"root_password\" {\n  \n  description = \"ssh root password\"\n}\n\nvariable \"pvname\" {\n  description = \"name of pv\"\n}\n\nvariable \"pvsize\" {\n  description = \"size of pv\"\n}\n\nresource \"null_resource\" \"CreatePV\" {\n  provisioner \"remote-exec\" {\n    inline = [\n      \"cp /tmp/createPV.yaml /tmp/PV_orig.yaml\",\n      \"pvdir=/export/${var.pvname}/\",\n      \"mkdir $pvdir\",\n      \"chmod +x $pvdir\",\n      \"echo $pvdir\",\n      \"echo $pvdir \\\"*(rw,nohide,insecure,no_subtree_check,async,no_root_squash)\\\" >> /etc/exports\",\n      \"service nfs-kernel-server restart\",\n      \"chmod +x /tmp/createPV.yaml\",\n      \"sed -i -e 's/<pvname>/${var.pvname}/g' /tmp/createPV.yaml\",\n      \"sed -i -e 's/<pvsize>/${var.pvsize}/g' /tmp/createPV.yaml\",\n      \"sed -i -e 's/<serverip>/${var.serverip}/g' /tmp/createPV.yaml\",\n      \"sed -i -e \\\"s|<nfspath>|$${pvdir}|g\\\" /tmp/createPV.yaml\",\n      \"kubectl create -f /tmp/createPV.yaml\",\n      \"cp /tmp/PV_orig.yaml /tmp/createPV.yaml\",\n    ]\n\n    connection {\n      host     = \"${var.serverip}\"\n      type     = \"ssh\"\n      user     = \"root\"\n      password = \"${var.root_password}\"\n    }\n  }\n}",
+      "templateVariables": {
+        "template_input_params": [
+          {
+            "name": "pvname",
+            "description": "name of pv",
+            "type": "string",
+            "required": true,
+            "secured": false,
+            "label": "pvname",
+            "hidden": false,
+            "immutable": false
+          },
+          {
+            "name": "pvsize",
+            "description": "size of pv",
+            "type": "string",
+            "required": true,
+            "secured": false,
+            "label": "pvsize",
+            "hidden": false,
+            "immutable": false
+          },
+          {
+            "name": "root_password",
+            "description": "ssh root password",
+            "type": "string",
+            "required": true,
+            "secured": false,
+            "label": "root_password",
+            "hidden": false,
+            "immutable": false
+          },
+          {
+            "name": "serverip",
+            "description": "IP of host to ssh",
+            "type": "string",
+            "required": true,
+            "secured": false,
+            "label": "serverip",
+            "hidden": false,
+            "immutable": false
+          }
+        ],
+        "template_output_params": []
+      }
+    }
+  },
+  "metadata": {
+    "displayName": "createPV",
+    "bullets": []
+  },
+  "created_at": "2018-06-19T06:57:44.704Z",
+  "id": "5b28a9683954fd001eab8609",
+  "tenantId": "8f5decca-1004-440a-a720-80e20bfa3ef4",
+  "default_template_version": "5b28a9683954fd001eab860a",
+  "template_version": {
+    "id": "5b28a9683954fd001eab860a",
+    "name": "v1.0.0",
+    "enabled": true,
+    "compatible_versions": [
+      "v1.0.0"
+    ]
+  },
+  "template_versions": [
+    {
+      "id": "5b28a9683954fd001eab860a",
+      "name": "v1.0.0",
+      "enabled": true,
+      "compatible_versions": [
+        "v1.0.0"
+      ]
+    }
+  ]
+}

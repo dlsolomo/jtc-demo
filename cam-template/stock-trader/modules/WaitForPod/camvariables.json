@@ -1,0 +1,36 @@
+{
+  "template_input_params": [
+    {
+      "name": "host",
+      "description": "IP of host to ssh",
+      "type": "string",
+      "required": true,
+      "secured": false,
+      "label": "host",
+      "hidden": false,
+      "immutable": false
+    },
+    {
+      "name": "namespace",
+      "description": "namespace",
+      "default": "default",
+      "type": "string",
+      "required": true,
+      "secured": false,
+      "label": "namespace",
+      "hidden": false,
+      "immutable": false
+    },
+    {
+      "name": "root_password",
+      "description": "ssh root password",
+      "type": "string",
+      "required": true,
+      "secured": false,
+      "label": "root_password",
+      "hidden": false,
+      "immutable": false
+    }
+  ],
+  "template_output_params": []
+}
