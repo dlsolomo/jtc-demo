@@ -2,7 +2,7 @@
   "service": {
     "specVersion": "v3",
     "catalog_metadata": {
-      "name": "Stock Trader Traditional",
+      "name": "Stock Trader Modern",
       "description": "",
       "image": "serviceicon_1.svg",
       "category": "Stock Traditional",
